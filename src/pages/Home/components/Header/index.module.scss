@@ -1,0 +1,24 @@
+@import "@/assets/styles/dimens.scss";
+@import "@/assets/styles/colors.scss";
+
+.root {
+  height: $main-header-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .titleWrapper {
+    font-size: $font-size-large-xx;
+    font-weight: bold;
+    color: $color-white;
+
+  }
+
+  .controlWrapper {
+    display: flex;
+    align-items: center;
+    .button {
+      margin-right: $padding-normal-xxx;
+    }
+  }
+}

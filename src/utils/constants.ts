@@ -1,0 +1,2 @@
+export const FORM_WRAPPER_COL_OFFSET = 4
+export const FORM_WRAPPER_COL_SPAN = 20

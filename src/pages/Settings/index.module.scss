@@ -1,0 +1,15 @@
+@import "@/assets/styles/dimens.scss";
+
+.root {
+  display: flex;
+  justify-content: center;
+  .contentWrapper {
+    width: 600px;
+
+    .titleWrapper {
+      margin: $padding-large 0px;
+      font-weight: bold;
+      font-size: $font-size-normal-xxx;
+    }
+  }
+}

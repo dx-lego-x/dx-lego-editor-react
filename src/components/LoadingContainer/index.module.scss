@@ -1,0 +1,17 @@
+@import "@/assets/styles/dimens";
+
+.root {
+  width: 100%;
+
+  .spinContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .text {
+      margin-left: $padding-normal-xxx;
+    }
+  }
+}

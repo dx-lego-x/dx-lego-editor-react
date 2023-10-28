@@ -1,0 +1,22 @@
+@import "@/assets/styles/dimens.scss";
+@import "@/assets/styles/colors.scss";
+
+.root {
+  background-color: $color-gray-9;
+  color: $color-white;
+  height: $main-header-height;
+  .copyrightWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .divider {
+      width: $line-width;
+      height: 14px;
+      background-color: $color-white;
+    }
+    .button {
+      padding: 0;
+    }
+  }
+}

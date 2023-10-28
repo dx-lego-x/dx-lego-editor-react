@@ -1,0 +1,32 @@
+@import "@/assets/styles/dimens.scss";
+@import "@/assets/styles/colors.scss";
+
+.root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .centerWrapper {
+    min-width: 400px;
+    max-width: 600px;
+
+    .titleWrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: $padding-normal-xxx;
+      .title {
+        font-weight: bold;
+        font-size: $font-size-extreme-large-xxx;
+      }
+      
+    }
+
+    .registerButton {
+      margin-left: $padding-normal-xxx;
+    }
+
+  }
+}

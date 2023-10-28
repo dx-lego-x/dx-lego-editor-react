@@ -1,0 +1,16 @@
+@import "@/assets/styles/dimens.scss";
+
+.root {
+  display: flex;
+  justify-content: center;
+
+  .form {
+    width: 420px;
+    margin-top: $padding-large;
+
+    .image {
+      width: 180px;
+      height: 180px;
+    }
+  }
+}
