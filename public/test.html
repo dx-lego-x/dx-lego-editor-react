@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="root">
+  </div>
+  <script>
+    function debounce(fn, delay) {
+      let timer;
+      return function() {
+        let context = this;
+        let args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          fn.apply(context, args);
+        }, delay);
+      }
+    }
+
+    // 默认开启防抖，也可以给delay传null来关闭
+    function makeInput(inputCallback, delay = 100) {
+      const input = document.createElement('input')
+      const onInput = (e) => inputCallback(e)
+      input.addEventListener('input', delay && delay > 0 ? debounce(onInput) : onInput)
+      return input
+    }
+
+    const root = document.getElementById('root')
+    const input = makeInput(() => {
+      console.log('这里发请求，生成的input组件，默认支持防抖')
+    }, 100)
+    root.appendChild(input)
+    
+  </script>
+</body>
+</html>

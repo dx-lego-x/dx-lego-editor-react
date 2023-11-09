@@ -15,5 +15,6 @@ interface UserModelProps {
 }
 
 export interface UserProps extends UserModelProps {
-  id: number
+  _id: string
+  id: string
 }

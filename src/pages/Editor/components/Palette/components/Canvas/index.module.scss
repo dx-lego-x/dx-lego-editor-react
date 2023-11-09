@@ -1,0 +1,12 @@
+@import "@/assets/styles/colors.scss";
+
+.root {
+  width: 375px;
+  height: 560px;
+  min-height: 560px;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: $color-white;
+  margin-top: 60px;
+}

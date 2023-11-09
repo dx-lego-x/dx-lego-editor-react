@@ -1,0 +1,23 @@
+@import "@/assets/styles/dimens.scss";
+@import "@/assets/styles/colors.scss";
+
+.root {
+  min-height: 100vh;
+  max-height: 100vh;
+  .contentRoot {
+    display: flex;
+    .selectorRoot {
+      width: 350px;
+      box-sizing: border-box;
+      border-right: $line-width solid $color-gray-5;
+    }
+    .paletteRoot {
+      flex: 1;
+    }
+    .configRoot {
+      width: 350px;
+      box-sizing: border-box;
+      border-left: $line-width solid $color-gray-5;
+    }
+  }
+}

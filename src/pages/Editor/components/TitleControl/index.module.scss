@@ -1,0 +1,9 @@
+@import "@/assets/styles/colors.scss";
+
+.input {
+  color: $color-white;
+
+  &.editMode {
+    color: $color-main-black;
+  }
+}

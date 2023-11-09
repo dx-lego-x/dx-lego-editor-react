@@ -1,4 +1,5 @@
 import MainLayout from '@/layouts/MainLayout'
+import Editor from '@/pages/Editor'
 import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import MyWorks from '@/pages/MyWorks'
@@ -9,6 +10,7 @@ export const PATHNAME_LOGIN = '/login'
 export const PATHNAME_HOME = '/'
 export const PATHNAME_SETTINGS = '/settings'
 export const PATHNAME_MY_WORKS = '/myWorks'
+export const PATHNAME_EDITOR = '/editor'
 
 const router = createBrowserRouter([{
   path: PATHNAME_HOME,
@@ -24,6 +26,9 @@ const router = createBrowserRouter([{
     element: <MyWorks/>
   }],
 }, {
+  path: PATHNAME_EDITOR + '/:uuid',
+  element: <Editor/>
+},{
   path: PATHNAME_LOGIN,
   element: <Login/>
 }])

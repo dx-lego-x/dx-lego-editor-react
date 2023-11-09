@@ -1,0 +1,28 @@
+@import "@/assets/styles/dimens.scss";
+@import "@/assets/styles/colors.scss";
+
+.root {
+  padding: 0px;
+  cursor: pointer;
+  border: $line-width solid transparent;
+  user-select: none;
+  box-sizing: border-box !important;
+
+  & > * {
+    position: static !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  &:hover {
+    border: $line-width dashed $color-main-spliter;
+  }
+
+  &.active {
+    border: $line-width solid $color-main-blue;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}

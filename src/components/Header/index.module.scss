@@ -8,16 +8,22 @@
   justify-content: space-between;
 
   .titleWrapper {
-    font-size: $font-size-large-xx;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
     color: $color-white;
-
+    .titleText {
+      font-size: $font-size-large-xx;
+      font-weight: bold;
+    }
+    .titleControlWrapper {
+      margin-left: $padding-normal-xxx;
+    }
   }
 
   .controlWrapper {
     display: flex;
     align-items: center;
-    .button {
+    .customControlWrapper {
       margin-right: $padding-normal-xxx;
     }
   }

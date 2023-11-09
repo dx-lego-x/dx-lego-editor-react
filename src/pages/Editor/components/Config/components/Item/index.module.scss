@@ -1,0 +1,13 @@
+@import "@/assets/styles/dimens.scss";
+
+.root {
+  width: 100%;
+  .labelWrapper {
+    margin-bottom: $padding-narrow-x;
+    font-weight: 500;
+  }
+
+  .configComponent {
+    width: 100%;
+  }
+}
