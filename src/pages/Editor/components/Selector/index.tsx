@@ -15,7 +15,6 @@ const Selector: FC = () => {
   const dispatch = useDispatch()
   useRequest(fetchSelectorBricksApi, {
     onSuccess(res) {
-      console.log(res)
       setGroupsInfo(res)
     },
 

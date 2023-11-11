@@ -1,7 +1,7 @@
 import ShadowInput from '@/pages/Editor/components/Config/components/ShadowInput'
 import SizeInput from '@/pages/Editor/components/Config/components/SizeInput'
 import { BaseFCProps } from '@/types/base'
-import { DxBrickSchema, WorkProps } from '@/types/work'
+import { DxBrickSchema, DxPageSchema, WorkProps } from '@/types/work'
 import { ColorPicker, Input, InputNumber, Radio, Select, Slider } from 'antd'
 import { DxBrickProps, DxBrickStyleProps, PageProps, TextProps } from 'dx-lego-bricks'
 import { cloneDeep } from 'lodash'
@@ -14,7 +14,7 @@ export type PropNameKeys = keyof DxBrickStyleProps | keyof DxBrickProps<TextProp
 export type ConfigComponent = React.ForwardRefExoticComponent<any> | FC<BrickConfigFCProps<any> | any>
 export interface BrickConfigFCProps<T> extends BaseFCProps {
   workdata: WorkProps
-  brickdata: DxBrickSchema
+  schemadata: DxBrickSchema | DxPageSchema
   value: T
   onChange: (value: T) => void
 }
@@ -166,6 +166,35 @@ const mapPropName2ConfigComponentOption: Partial<Record<PropNameKeys, ConfigComp
     { label: '删除线', value: 'line-through' }
   ]),
   backgroundColor: makeColorInput(),
+  backgroundRepeat: {
+    ...makeSelect([
+      { label: '不重复', value: 'no-repeat' },
+      { label: '全部重复', value: 'repeat' },
+      { label: '水平重复', value: 'repeat-x' },
+      { label: '垂直重复', value: 'repeat-y' },
+    ]),
+    displayCondition: (props) => {
+      if (props.style.backgroundImage) {
+        return true
+      }
+
+      return false
+    }
+  },
+  backgroundSize: {
+    ...makeSelect([
+      { label: '自动', value: 'auto' },
+      { label: 'contain', value: 'contain' },
+      { label: 'cover', value: 'cover' }
+    ]),
+    displayCondition: (props) => {
+      if (props.style.backgroundImage) {
+        return true
+      }
+
+      return false
+    }
+  },
   // 尺寸
   width: {
     component: SizeInput,
@@ -294,12 +323,12 @@ function getBrickConfigType(brick: DxBrickSchema, propName: PropNameKeys): Brick
   return 'style'
 }
 
-export function transferBrickConfiguration(brick: DxBrickSchema): null | BrickConfigGroupOption[] {
-  if (!brick) {
+export function transferSchemaConfiguration(schema: DxBrickSchema | DxPageSchema): null | BrickConfigGroupOption[] {
+  if (!schema) {
     return null
   }
 
-  const groupOptions = genBrickGroupOptions(brick?.component)
+  const groupOptions = genBrickGroupOptions(schema?.component)
   if (!groupOptions) {
     return null
   }
@@ -315,12 +344,12 @@ export function transferBrickConfiguration(brick: DxBrickSchema): null | BrickCo
 
       // 某些属性的配置展示依赖的前置条件，当条件不成立时也不展示，例如borderWidth只在borderStyle不为none时才展示
       const displayCondition = componentOption.displayCondition
-      if (displayCondition && brick.props && !displayCondition(brick.props)) {
+      if (displayCondition && schema.props && !displayCondition(schema.props)) {
         return null
       }
 
       return {
-        type: getBrickConfigType(brick, propName),
+        type: getBrickConfigType(schema, propName),
         propName,
         label: mapPropName2Label[propName] || '未配置的属性 = =',
         componentOption

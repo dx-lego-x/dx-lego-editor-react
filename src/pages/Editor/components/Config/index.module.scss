@@ -6,10 +6,6 @@
   overflow-y: scroll;
 
   .contentWrapper {
-    margin: $padding-large;
-
-    .collapseLabelWrapper {
-      // font-weight: bold;
-    }
+    margin: 0 $padding-large $padding-extreme-large-xxx $padding-large;
   }
 }

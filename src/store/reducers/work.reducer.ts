@@ -21,6 +21,16 @@ const slice = createSlice({
       state.data = action.payload
     },
 
+    setCurrentPage(state, action: PayloadAction<{ id: string }>) {
+      if (!state.data || !state.data.schemas) {
+        return
+      }
+      const { id } = action.payload
+
+      state.data.schemas.currentPageId = id
+      state.data.schemas.currentBrickId = ''
+    },
+
     setCurrentBrick(state, action: PayloadAction<{ id: string }>) {
       if (!state.data || !state.data.schemas) {
         return
@@ -40,22 +50,37 @@ const slice = createSlice({
       currentPage.props?.custom.children.push(brickSchema)
     },
 
-    setBrickProp(state, action: PayloadAction<{ type: BrickConfigType, propName: PropNameKeys, newValue: any }>) {
+    setSchemaProp(state, action: PayloadAction<{ type: BrickConfigType, propName: PropNameKeys, newValue: any }>) {
       const { type, propName, newValue } = action.payload
 
       const currentBrick = getCurrentBrick(state.data?.schemas)
       if (!currentBrick) {
-        return
-      }
+        const currentPage = getCurrentPage(state.data?.schemas)
+        if (currentPage) {
+          // @ts-ignore
+          currentPage.props[type][propName] = newValue
+        }
 
-      // @ts-ignore
-      currentBrick.props[type][propName] = newValue
+      } else {
+        // @ts-ignore
+        currentBrick.props[type][propName] = newValue
+      }
+    },
+
+    moveBrick(state, action: PayloadAction<{ x: number, y: number }>) {
+      const { x, y } = action.payload
+
+      const currentBrick = getCurrentBrick(state.data?.schemas)
+      if (currentBrick && currentBrick.props) {
+        currentBrick.props.style.left = x + 'px'
+        currentBrick.props.style.top = y + 'px'
+      }
     }
   },
 })
 
 export function getCurrentPage(schemas?: DxLegoSchema) {
-  const page = schemas?.pages.find(page => page.id === schemas?.currentPageId)
+  const page = schemas?.pages.find(page => page.id === schemas?.currentPageId) || null
   return page
 }
 
@@ -77,9 +102,11 @@ export function getCurrentBrick(schemas?: DxLegoSchema) {
 
 export const {
   setWorkData,
+  setCurrentPage,
   setCurrentBrick,
   addBrick,
-  setBrickProp
+  setSchemaProp,
+  moveBrick
 
 } = slice.actions
 export default slice.reducer

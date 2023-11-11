@@ -6,6 +6,7 @@ import { WorkState, getCurrentPage } from '@/store/reducers/work.reducer'
 import { transferBrickComponent } from '@/utils/brick-tools/transfer-component'
 import EditWrapper from '../EditWrapper'
 import { DxBrickSchema } from '@/types/work'
+import PageEditWrapper from '../PageEditWrapper'
 
 const Canvas: FC = () => {
   const { data: workInfo } = useSelector<GlobalState, WorkState>(store => store.work)
@@ -33,22 +34,29 @@ const Canvas: FC = () => {
         {
           Page 
           &&
-          <Page style={ props.style } custom={{
-            children: props.custom.children.map((brickSchema: DxBrickSchema) => {
-              const { id, component = '', props: brickProps } = brickSchema
+          <PageEditWrapper 
+            page={ page }            
+            >
+            <Page 
+              style={ props.style } 
+              custom={{
+                children: props.custom.children.map((brickSchema: DxBrickSchema) => {
+                  const { id, component = '', props: brickProps } = brickSchema
 
-              const Component = transferBrickComponent(component)
-              if (!Component) {
-                return null
-              }
+                  const Component = transferBrickComponent(component)
+                  if (!Component) {
+                    return null
+                  }
 
-              return (
-                <EditWrapper key={ id } brick={ brickSchema } >
-                  <Component style={ brickProps?.style || {} } custom={ brickProps?.custom } />
-                </EditWrapper>
-              )
-            })
-          }} />
+                  return (
+                    <EditWrapper key={ id } brick={ brickSchema } >
+                      <Component style={ brickProps?.style || {} } custom={ brickProps?.custom } />
+                    </EditWrapper>
+                  )
+                })
+              }} 
+              />
+          </PageEditWrapper>
         }
       </>
     )

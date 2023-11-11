@@ -12,10 +12,10 @@ const baseOptions = [
   { label: '自适应', value: 'fit-content' },
 ]
 
-const SizeInput: FC<SizeInputProps> = ({ workdata, brickdata, value, onChange }) => {
+const SizeInput: FC<SizeInputProps> = ({ schemadata, value, onChange }) => {
 
   const options = useMemo<SelectOption[]>(() => {
-    const position = brickdata.props?.style.position
+    const position = schemadata.props?.style.position
 
     if (position === 'absolute') {
       return [...baseOptions, { label: '数值', value: 'number' }]
@@ -23,7 +23,7 @@ const SizeInput: FC<SizeInputProps> = ({ workdata, brickdata, value, onChange })
 
     return [...baseOptions]
 
-  }, [brickdata.props?.style.position])
+  }, [schemadata.props?.style.position])
 
 
   const defaultValue = useMemo(() => {
