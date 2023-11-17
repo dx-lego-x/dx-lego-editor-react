@@ -1,0 +1,55 @@
+.root {
+  .e1 {
+    width: fit-content;
+    background-color: red;
+    animation-name: example1;
+    animation-duration: 4s;
+    animation-delay: 1s;
+    padding: 16px;
+  }
+
+  .e2 {
+    width: fit-content;
+    background-color: red;
+    animation-name: example2;
+    animation-duration: 4s;
+    padding: 16px;
+  }
+
+  .e3 {
+    width: fit-content;
+    background-color: red;
+    animation-name: example1;
+    animation-duration: 2s;
+    animation-iteration-count: 3; // infinite;
+    animation-direction: reverse; // normal
+    padding: 16px;
+  }
+
+  .e4 {
+    width: fit-content;
+    background-color: red;
+    animation-name: example1;
+    animation-duration: 4s;
+    padding: 16px;
+    animation-fill-mode: forwards; // retain the style values that is set by the last keyframe
+
+    animation-timing-function: ease; // default, slow fast slow, faster then ease-in-out
+    // animation-timing-function: linear; // all same speed
+    // animation-timing-function: ease-in; // slow start
+    // animation-timing-function: ease-out; // slow end
+    // animation-timing-function: ease-in-out; // slow start and end
+  }
+}
+
+@keyframes example1 {
+  from { background-color: red; }
+  to { background-color: yellow; }
+}
+
+@keyframes example2 {
+  0%   {background-color: red;}
+  25%  {background-color: yellow;}
+  50%  {background-color: blue;}
+  100% {background-color: green;}
+}

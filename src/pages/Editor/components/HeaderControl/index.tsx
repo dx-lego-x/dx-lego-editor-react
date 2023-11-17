@@ -1,11 +1,12 @@
 import { Button, message } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styles from './index.module.scss'
 import { useRequest } from 'ahooks'
 import { updateWorkApi } from '@/api/work.api'
 import { useSelector } from 'react-redux'
 import { GlobalState } from '@/store'
 import { WorkState } from '@/store/reducers/work.reducer'
+import Settings from '../Settings'
 
 const HeaderControl: FC = () => {
   const { data: workData } = useSelector<GlobalState, WorkState>(store => store.work)
@@ -43,12 +44,17 @@ const HeaderControl: FC = () => {
     })
   }
 
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
+
 
   return (
     <>
-      <Button onClick={ onSaveClick } loading={ updateWorkLoading } >保存</Button>
-      <Button className={ styles.withMargin } >预览和设置</Button>
-      <Button className={ styles.withMargin } type='primary' >发布</Button>
+      <>
+        <Button onClick={ onSaveClick } loading={ updateWorkLoading } >保存</Button>
+        <Button className={ styles.withMargin } onClick={ () => setIsPreviewOpen(true) } >预览和设置</Button>
+        <Button className={ styles.withMargin } type='primary' >发布</Button>
+      </>
+      <Settings isOpen={ isPreviewOpen } onClose={ () => setIsPreviewOpen(false) } />
     </>
   )
 }

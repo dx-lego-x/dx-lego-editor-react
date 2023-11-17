@@ -1,0 +1,22 @@
+@import "@/assets/styles/colors.scss";
+@import "@/assets/styles/dimens.scss";
+
+.root {
+  width: $client-main-width;
+  background-color: $color-white;
+
+  .previewRoot {
+    width: 100%;
+    .titleWrapper {
+      height: 40px;
+      box-sizing: border-box;
+      line-height: 40px;
+      padding: 0px $padding-narrow-xxx;
+      border: $line-width solid $color-main-spliter;
+    }
+    .iframe {
+      width: 100%;
+      min-height: $client-main-height;
+    }
+  }
+}

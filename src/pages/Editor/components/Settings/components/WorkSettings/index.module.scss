@@ -1,0 +1,18 @@
+@import "@/assets/styles/dimens.scss";
+
+.root {
+  padding: $padding-extreme-large-xxx $padding-large;
+  ul {
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: $padding-extreme-large;
+      .labelWrapper {
+        margin-right: $padding-narrow-xxx;
+      }
+      .contentWrapper {
+        flex: 1;
+      }
+    }
+  }
+}

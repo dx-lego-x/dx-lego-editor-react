@@ -4,6 +4,7 @@ import Home from '@/pages/Home'
 import Login from '@/pages/Login'
 import MyWorks from '@/pages/MyWorks'
 import Settings from '@/pages/Settings'
+import AnimationLearn from '@/test/AnimationLearn'
 import { createBrowserRouter } from 'react-router-dom'
 
 export const PATHNAME_LOGIN = '/login'
@@ -28,9 +29,12 @@ const router = createBrowserRouter([{
 }, {
   path: PATHNAME_EDITOR + '/:uuid',
   element: <Editor/>
-},{
+}, {
   path: PATHNAME_LOGIN,
   element: <Login/>
+}, {
+  path: 'animation',
+  element: <AnimationLearn/>
 }])
 
 export default router

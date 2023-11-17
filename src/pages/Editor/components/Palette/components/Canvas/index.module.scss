@@ -1,9 +1,10 @@
 @import "@/assets/styles/colors.scss";
+@import "@/assets/styles/dimens.scss";
 
 .root {
-  width: 375px;
-  height: 560px;
-  min-height: 560px;
+  width: $client-main-width;
+  height: $client-main-height;
+  min-height: $client-main-height;
   padding: 0;
   overflow-x: hidden;
   overflow-y: auto;

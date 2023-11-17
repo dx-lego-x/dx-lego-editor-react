@@ -1,6 +1,6 @@
 import { Api } from '@/types/base'
 import { SelectorBrickGroupInfo, WorkListData, WorkProps } from '@/types/work'
-import { getApiPrefix, getInstance } from '@/utils/http'
+import { DEFAULT_BASE_URL, getApiPrefix, getInstance } from '@/utils/http'
 
 const WORK_PREFIX = getApiPrefix() + '/work'
 
@@ -23,4 +23,9 @@ export const fetchSelectorBricksApi: Api<SelectorBrickGroupInfo[]> = () => {
 export const updateWorkApi: Api<WorkProps, { uuid: string, payload: Partial<Pick<WorkProps, 'title' | 'desc' | 'schemas' | 'coverImg'>>}> = (params) => {
   const { uuid, payload } = params || {}
   return getInstance().patch(WORK_PREFIX + '/' + uuid, payload)
+}
+
+export const genViewUrl = (uuid?: string, type: 'preview' | 'publish' = 'preview') => {
+  const prefix = type === 'preview' ? '/page' : '/page/p'
+  return DEFAULT_BASE_URL + prefix + '/' + uuid
 }

@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { BaseResponse, HttpErrorDetail } from '@/types/base'
 
+export const DEFAULT_BASE_URL = 'http://localhost:7001'
 export const DEFAULT_TOKEN_KEY = 'token'
 
 const instanceMap = new Map<string, AxiosInstance>()
@@ -16,7 +17,7 @@ export class HttpError extends Error {
 }
 
 const instance = axios.create({
-  baseURL: 'http://localhost:7001', // 配置devServer proxy时，这里不能配置
+  baseURL: DEFAULT_BASE_URL, // 配置devServer proxy时，这里不能配置
   timeout: 30000
 })
 
