@@ -1,35 +1,46 @@
 import { GlobalState } from '@/store'
-import { WorkState } from '@/store/reducers/work.reducer'
-import { Input } from 'antd'
-import React, { FC, useState } from 'react'
-import { useSelector } from 'react-redux'
-import styles from './index.module.scss'
-import classNames from 'classnames'
+import { WorkState, setWorkData } from '@/store/reducers/work.reducer'
+import { FC } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import InputText from '@/components/InputText'
+import { useRequest } from 'ahooks'
+import { updateWorkApi } from '@/api/work.api'
+import { message } from 'antd'
 
 const TitleControl: FC = () => {
   const { data } = useSelector<GlobalState, WorkState>(store => store.work)
-  const [editMode, setEditMode] = useState(false)
+  const dispatch = useDispatch()
+  const { run: updateWork } = useRequest(updateWorkApi, {
+    manual: true,
 
-  const inputClassnames = classNames({
-    [styles.input]: true,
-    [styles.editMode]: editMode
+    onSuccess(res) {
+      dispatch(setWorkData(res))
+    },
+
+    onError(error) {
+      message.error('修改标题失败，请重试：' + error.message)
+    }
   })
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
+  const onChange = (value: string) => {
+    console.log('titleControl ->', value)
+    if (!value || !data || !data.uuid) {
+      return
+    }
+
+    updateWork({
+      uuid: data.uuid,
+      payload: {
+        title: value
+      }
+    })
   }
 
   return (
-    <>
-      <Input 
-        className={ inputClassnames }
-        value={ data?.title } 
-        bordered={ editMode } 
-        onFocus={ () => setEditMode(true) } 
-        onBlur={ () => setEditMode(false) }
-        onChange={ onChange }
-        />
-    </>
+    <InputText
+      value={ data?.title || '' }
+      onChange={ onChange }
+      />
   )
 }
 

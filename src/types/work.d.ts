@@ -44,13 +44,19 @@ import { DxBrickProps } from 'dx-lego-bricks'
 
 export * from 'dx-lego-bricks'
 
+export interface DxBrickEditProps {
+  isHidden?: boolean
+  isLocked?: boolean
+}
+
 export interface DxBrickSchema<T = any> {
   id?: string
   title?: string // 组件名称
   desc?: string // 组件描述
   component?: string // 组件对应的组件名（大写）
-  sampleImg?: string // 组件展示时的示例图片
+  sampleImg?: string // 组件在Selector展示时的示例图片
   props?: DxBrickProps<T> // 组件属性，包括style和custom
+  editProps?: DxBrickEditProps
 }
 
 export type DxPageSchema = DxBrickSchema<{ children: DxBrickSchema[], [key: string]: any }>

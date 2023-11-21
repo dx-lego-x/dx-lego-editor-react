@@ -1,7 +1,7 @@
 import { BaseFCProps } from '@/types/base'
 import { DxPageSchema } from '@/types/work'
 import classNames from 'classnames'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC } from 'react'
 import styles from './index.module.scss'
 import { WorkState, getCurrentPage, setCurrentPage } from '@/store/reducers/work.reducer'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,17 +17,17 @@ const PageEditWrapper: FC<EditWrapperProps> = ({ style, children, page }) => {
   const currentPage = getCurrentPage(data?.schemas)
   const dispatch = useDispatch()
 
-  const rootClass = useMemo(() => classNames({
+  const rootClass = classNames({
     [styles.root]: true,
     [styles.active]: page.id === currentPage?.id && !data?.schemas?.currentBrickId
-  }), [page.id, currentPage?.id, data?.schemas?.currentBrickId])
+  })
 
-  const onWrapperClick = useCallback((e: React.MouseEvent) => {
+  const onWrapperClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (page.id) {
       dispatch(setCurrentPage({ id: page.id }))
     }
-  }, [dispatch, page.id])
+  }
 
   return (
     <div 

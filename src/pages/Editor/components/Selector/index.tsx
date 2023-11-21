@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { useRequest } from 'ahooks'
 import { fetchSelectorBricksApi } from '@/api/work.api'
 import styles from './index.module.scss'
@@ -23,9 +23,9 @@ const Selector: FC = () => {
     }
   })
 
-  const onBrickSelected = useCallback((brick: DxBrickSchema) => {
+  const onBrickSelected = (brick: DxBrickSchema) => {
     dispatch(addBrick(cloneDeep(brick)))
-  }, [dispatch])
+  }
 
   return (
     <div className={ styles.root }>

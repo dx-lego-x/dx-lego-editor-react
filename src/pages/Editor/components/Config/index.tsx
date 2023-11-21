@@ -1,23 +1,26 @@
 import { GlobalState } from '@/store'
 import { WorkState, getCurrentBrick, getCurrentPage, setCurrentPage } from '@/store/reducers/work.reducer'
 import { BrickConfig, BrickConfigGroupOption, transferSchemaConfiguration } from '@/utils/brick-tools/transfer-config'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './index.module.scss'
-import { Collapse, Empty, List, Tabs } from 'antd'
+import { Button, Collapse, Empty, List, Result, Tabs } from 'antd'
 import ConfigItem from './components/Item'
 import { BaseFCProps } from '@/types/base'
 import { DxBrickSchema, DxPageSchema, WorkProps } from '@/types/work'
+import LayerConfig from './components/LayerConfig'
+import { LockFilled } from '@ant-design/icons'
 
 function isGroupOptionWithValidConfigs(option: BrickConfigGroupOption) {
   return option.configs && option.configs.length > 0 && !option.configs.every(config => config === null)
 }
 
-interface ComponentConfigProps extends BaseFCProps {
+export interface ConfigTabComponentProps extends BaseFCProps {
   workData: WorkProps
   currentSchema: DxBrickSchema | DxPageSchema | null
 }
-const SchemaConfig: FC<ComponentConfigProps> = ({ workData, currentSchema }) => {
+
+const SchemaConfig: FC<ConfigTabComponentProps> = ({ workData, currentSchema }) => {
   const [groupOptions, setGroupOptions] = useState<BrickConfigGroupOption[] | null>(null)
 
   useEffect(() => {
@@ -29,6 +32,8 @@ const SchemaConfig: FC<ComponentConfigProps> = ({ workData, currentSchema }) => 
     setGroupOptions(groupOptions)
 
   }, [currentSchema])
+
+  const onUnlockClick = () => {}
   
   return (
     <>
@@ -36,6 +41,18 @@ const SchemaConfig: FC<ComponentConfigProps> = ({ workData, currentSchema }) => 
         !currentSchema
         ?
         <Empty description='未选中任何组件' />
+        :
+        currentSchema.editProps?.isLocked
+        ?
+        <Result 
+          icon={ <LockFilled /> }
+          title={ '组件已锁定，无法编辑' }
+          extra={
+            <Button type='primary' onClick={ onUnlockClick }>
+              解锁
+            </Button>
+          }
+          />
         :
         groupOptions && groupOptions.length > 0 &&
         <Collapse
@@ -68,21 +85,21 @@ const SchemaConfig: FC<ComponentConfigProps> = ({ workData, currentSchema }) => 
 
 const Config: FC = () => {
   const { data } = useSelector<GlobalState, WorkState>(store => store.work)
-  const currentBrick = useMemo(() => getCurrentBrick(data?.schemas), [data?.schemas])
-  const currentPage = useMemo(() => getCurrentPage(data?.schemas), [data?.schemas])
+  const currentBrick = getCurrentBrick(data?.schemas)
+  const currentPage = getCurrentPage(data?.schemas)
   const dispatch = useDispatch()
 
   const [tabKey, setTabKey] = useState<'component' | 'layer' | 'page'>('component') 
 
   useEffect(() => {
-    if (currentBrick) {
+    if (currentBrick && tabKey !== 'layer') {
       setTabKey('component')
     }
 
     if (currentPage && !currentBrick) {
       setTabKey('page')
     }
-  }, [currentBrick, currentPage])
+  }, [currentBrick, currentPage, tabKey])
 
   const onTabClick = (activeKey: string) => {
     const _tabKey = activeKey as 'component' | 'layer' | 'page'
@@ -113,7 +130,10 @@ const Config: FC = () => {
           }, {
             key: 'layer',
             label: '图层配置',
-            children: <div>2</div>
+            children: (
+              data &&
+              <LayerConfig workData={ data } currentSchema={ currentPage } />
+            )
           }, {
             key: 'page',
             label: '页面配置',

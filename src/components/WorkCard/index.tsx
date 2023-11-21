@@ -1,5 +1,5 @@
 import { Button, Card, Dropdown, MenuProps } from 'antd'
-import React, { FC, useCallback, useMemo, useState } from 'react'
+import React, { FC, useState } from 'react'
 import styles from './index.module.scss'
 import { DEFAULT_RATIO } from '@/utils/constants'
 import { EditOutlined } from '@ant-design/icons'
@@ -18,30 +18,29 @@ const WorkCard: FC<WorkCardProps> = ({ work }) => {
   const [showMask, setShowMask] = useState(false)
   const navigate = useNavigate()
 
-  const menuItems = useMemo<MenuProps['items']>(() => {
-    return [{
-      key: 'copy',
-      label: '复制',
+  const menuItems: MenuProps['items'] = [{
+    key: 'copy',
+    label: '复制',
+    onClick: () => {
+  
+    }}, {
+      key: 'remove',
+      label: '删除',
       onClick: () => {
-    
-      }}, {
-        key: 'remove',
-        label: '删除',
-        onClick: () => {
-    
-        }
-      }, {
-        key: 'downloadImage',
-        label: '下载图片',
-        onClick: () => {
-    
-        }
-      }]
-  }, [])
+  
+      }
+    }, {
+      key: 'downloadImage',
+      label: '下载图片',
+      onClick: () => {
+  
+      }
+    }]
 
-  const editWork = useCallback(() => {
+
+  const toEditWork = () => {
     navigate(PATHNAME_EDITOR + '/' + work.uuid)
-  }, [navigate, work.uuid])
+  }
 
   return (
     <Card
@@ -66,13 +65,13 @@ const WorkCard: FC<WorkCardProps> = ({ work }) => {
           {
             showMask &&
             <div className={ styles.maskWrapper }>
-              <Button type='primary' onClick={ editWork }>编辑作品</Button>
+              <Button type='primary' onClick={ toEditWork }>编辑作品</Button>
             </div>
           }
         </div>
       }
       actions={[
-        <EditOutlined key='edit' onClick={ editWork }/>,
+        <EditOutlined key='edit' onClick={ toEditWork }/>,
         <Dropdown menu={{ items: menuItems }} placement='bottom'>
           <div>...</div>
         </Dropdown>

@@ -1,0 +1,14 @@
+@import "@/assets/styles/dimens.scss";
+@import "@/assets/styles/colors.scss";
+
+.itemWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  border: none;
+
+  &.active {
+    border: $line-width solid $color-main-blue;
+  }
+}

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { BaseFCProps } from '@/types/base'
 import classNames from 'classnames'
@@ -23,18 +23,18 @@ const EditWrapper: FC<EditWrapperProps> = ({ style, children, brick }) => {
   const [translateY, setTranslateY] = useState(0)
   const moveOffset = useRef<{ dx: number, dy: number }>({ dx: 0, dy: 0 })
 
-  const rootClass = useMemo(() => classNames({
+  const rootClass = classNames({
     [styles.root]: true,
     [styles.active]: brick.id === currentBrick?.id
-  }), [brick.id, currentBrick?.id])
+  })
 
-  const onWrapperClick = useCallback((e: React.MouseEvent) => {
+  const onWrapperClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (brick.id) {
       dispatch(setCurrentBrick({ id: brick.id }))
     }
-  }, [brick.id, dispatch])
-
+  }
+  
   const onMouseMove = useCallback((e: MouseEvent) => {
     if (!isMoving) {
       return
@@ -75,12 +75,12 @@ const EditWrapper: FC<EditWrapperProps> = ({ style, children, brick }) => {
 
   }, [brick.props?.style.left, brick.props?.style.position, brick.props?.style.top, dispatch, onMouseMove])
 
-  const onMouseDown = useCallback((e: React.MouseEvent) => {
+  const onMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
     setIsMoving(true)
     dispatch(setCurrentBrick({ id: brick.id || '' }))
-  }, [brick.id, dispatch])
+  }
 
   return (
     <div 

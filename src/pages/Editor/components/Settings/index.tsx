@@ -1,5 +1,5 @@
 import { BaseFCProps } from '@/types/base'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useState } from 'react'
 import styles from './index.module.scss'
 import { CloseOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
@@ -16,37 +16,36 @@ const Settings: FC<SettingsProps> = ({ isOpen, onClose }) => {
 
   const [closing, setClosing] = useState(false)
 
-  const animationWrapperClassnames = useMemo(() => classNames({
+  const animationWrapperClassnames = classNames({
     [styles.animationWrapper]: true,
     [styles.active]: isOpen,
     [styles.wrapperIn]: isOpen,
     [styles.wrapperOut]: closing,
-  }), [isOpen, closing])
+  })
 
-  const previewAnimationWrapperClassnames = useMemo(() => classNames({
+  const previewAnimationWrapperClassnames = classNames({
     [styles.previewAnimationWrapper]: true,
     [styles.previewIn]: isOpen,
     [styles.previewOut]: closing,
-  }), [closing, isOpen])
+  })
 
 
-  const sliderWrapperClassnames = useMemo(() => classNames({
+  const sliderWrapperClassnames = classNames({
     [styles.sliderWrapper]: true,
     [styles.sliderIn]: isOpen,
     [styles.sliderOut]: closing,
-  }), [isOpen, closing])
-
+  })
   // slider的animationend也会走到这里
-  const onAnimationEnd = useCallback((e: React.AnimationEvent<HTMLDivElement>) => {
+  const onAnimationEnd = (e: React.AnimationEvent<HTMLDivElement>) => {
     if (e.currentTarget.classList.contains(styles.wrapperOut)) {
       onClose()
       setClosing(false)
     }
-  }, [onClose])
+  }
 
-  const onCloseClick = useCallback(() => {
+  const onCloseClick = () => {
     setClosing(true)
-  }, [])
+  }
 
   
   return (

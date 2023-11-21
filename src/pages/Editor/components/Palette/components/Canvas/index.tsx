@@ -41,7 +41,11 @@ const Canvas: FC = () => {
               style={ props.style } 
               custom={{
                 children: props.custom.children.map((brickSchema: DxBrickSchema) => {
-                  const { id, component = '', props: brickProps } = brickSchema
+                  const { id, component = '', props: brickProps, editProps } = brickSchema
+
+                  if (editProps?.isHidden) {
+                    return null
+                  }
 
                   const Component = transferBrickComponent(component)
                   if (!Component) {

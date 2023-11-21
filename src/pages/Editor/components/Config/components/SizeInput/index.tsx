@@ -1,6 +1,6 @@
 import { BrickConfigFCProps, SelectOption } from '@/utils/brick-tools/transfer-config'
 import { InputNumber, Select } from 'antd'
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 import styles from './index.module.scss'
 
 export interface SizeInputProps extends BrickConfigFCProps<string> {
@@ -14,21 +14,27 @@ const baseOptions = [
 
 const SizeInput: FC<SizeInputProps> = ({ schemadata, value, onChange }) => {
 
-  const options = useMemo<SelectOption[]>(() => {
-    const position = schemadata.props?.style.position
+  let options: SelectOption[] = []
+  const position = schemadata.props?.style.position
+  if (position === 'absolute') {
+    options = [...baseOptions, { label: '数值', value: 'number' }]
+  } else {
+    options = [...baseOptions]
+  }
 
-    if (position === 'absolute') {
-      return [...baseOptions, { label: '数值', value: 'number' }]
-    }
+  // const options = useMemo<SelectOption[]>(() => {
+  //   const position = schemadata.props?.style.position
 
-    return [...baseOptions]
+  //   if (position === 'absolute') {
+  //     return [...baseOptions, { label: '数值', value: 'number' }]
+  //   }
 
-  }, [schemadata.props?.style.position])
+  //   return [...baseOptions]
+
+  // }, [schemadata.props?.style.position])
 
 
-  const defaultValue = useMemo(() => {
-    return value.includes('px') ? 'number' : value
-  }, [value])
+  const defaultValue = value.includes('px') ? 'number' : value
 
   const onChangeInner = (newOption: string, newValue?: number) => {
     if (newOption !== 'number') {
@@ -59,4 +65,4 @@ const SizeInput: FC<SizeInputProps> = ({ schemadata, value, onChange }) => {
   )
 }
 
-export default SizeInput
+export default React.memo(SizeInput)

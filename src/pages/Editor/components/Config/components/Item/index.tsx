@@ -2,7 +2,7 @@ import { setSchemaProp } from '@/store/reducers/work.reducer'
 import { BaseFCProps } from '@/types/base'
 import { DxBrickSchema, DxPageSchema, WorkProps } from '@/types/work'
 import { BrickConfig, defaultResultValueTransfer } from '@/utils/brick-tools/transfer-config'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import styles from './index.module.scss'
 
@@ -16,6 +16,7 @@ const Item: FC<ConfigItemProps> = ({ workData, config, schema }) => {
   const { component: Component, props, valueKey = 'value', initValueTransfer, resultValueTransfer } = componentOption
   const dispatch = useDispatch()
   
+  // 传递给子组件的函数通过useCallback来优化性能
   const onChange = useCallback((...args: any) => {
     const newValue = resultValueTransfer ? resultValueTransfer.apply(null, args) : defaultResultValueTransfer.apply(null, args)
 
@@ -27,14 +28,19 @@ const Item: FC<ConfigItemProps> = ({ workData, config, schema }) => {
 
   }, [config.propName, config.type, dispatch, resultValueTransfer])
 
-  const value = useMemo(() => {
-    let v = schema.props && schema.props[type] && schema.props[type][propName]
-    if (initValueTransfer) {
-      v = initValueTransfer(v)
-    }
+  let value = schema.props && schema.props[type] && schema.props[type][propName]
+  if (initValueTransfer) {
+    value = initValueTransfer(value)
+  }
 
-    return v
-  }, [schema.props, initValueTransfer, propName, type])
+  // const value = useMemo(() => {
+  //   let v = schema.props && schema.props[type] && schema.props[type][propName]
+  //   if (initValueTransfer) {
+  //     v = initValueTransfer(v)
+  //   }
+
+  //   return v
+  // }, [schema.props, initValueTransfer, propName, type])
 
   return (
     <div className={ styles.root } key={ propName }>

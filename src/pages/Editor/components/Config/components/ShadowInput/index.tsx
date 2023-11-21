@@ -1,6 +1,6 @@
 import { BrickConfigFCProps } from '@/utils/brick-tools/transfer-config'
 import { ColorPicker, Slider, Switch } from 'antd'
-import React, { FC, useCallback, useMemo } from 'react'
+import React, { FC } from 'react'
 import styles from './index.module.scss'
 
 interface ShadowOption {
@@ -42,12 +42,10 @@ function shadowOption2Value(option: ShadowOption) {
 }
 
 const ShadowInput: FC<BrickConfigFCProps<string>> = ({ style, value, onChange }) => {
-  const hasShadow = useMemo(() => {
-    return value !== 'none'
-  }, [value])
-  const shadowOption = useMemo(() => shadowValue2Option(value), [value])
+  const hasShadow = value !== 'none'
+  const shadowOption = shadowValue2Option(value)
 
-  const onChangeInner = useCallback((_hasShadow: boolean, options?: ShadowOption) => {
+  const onChangeInner = (_hasShadow: boolean, options?: ShadowOption) => {
     if (_hasShadow) { 
       // 从关闭状态打开了阴影开关，此时要给阴影赋一个默认值
       if (!options) {
@@ -59,7 +57,7 @@ const ShadowInput: FC<BrickConfigFCProps<string>> = ({ style, value, onChange })
     } else {
       onChange('none')
     }
-  }, [onChange])
+  }
 
 
   return (
@@ -111,4 +109,4 @@ const ShadowInput: FC<BrickConfigFCProps<string>> = ({ style, value, onChange })
   )
 }
 
-export default ShadowInput
+export default React.memo(ShadowInput)
