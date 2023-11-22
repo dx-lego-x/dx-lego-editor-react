@@ -22,18 +22,6 @@ const SizeInput: FC<SizeInputProps> = ({ schemadata, value, onChange }) => {
     options = [...baseOptions]
   }
 
-  // const options = useMemo<SelectOption[]>(() => {
-  //   const position = schemadata.props?.style.position
-
-  //   if (position === 'absolute') {
-  //     return [...baseOptions, { label: '数值', value: 'number' }]
-  //   }
-
-  //   return [...baseOptions]
-
-  // }, [schemadata.props?.style.position])
-
-
   const defaultValue = value.includes('px') ? 'number' : value
 
   const onChangeInner = (newOption: string, newValue?: number) => {

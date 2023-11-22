@@ -1,5 +1,5 @@
 import { GlobalState } from '@/store'
-import { WorkState, getCurrentBrick, getCurrentPage, setCurrentPage } from '@/store/reducers/work.reducer'
+import { WorkState, getCurrentBrick, getCurrentPage, setCurrentPage, setSchemaEditProp } from '@/store/reducers/work.reducer'
 import { BrickConfig, BrickConfigGroupOption, transferSchemaConfiguration } from '@/utils/brick-tools/transfer-config'
 import { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +10,7 @@ import { BaseFCProps } from '@/types/base'
 import { DxBrickSchema, DxPageSchema, WorkProps } from '@/types/work'
 import LayerConfig from './components/LayerConfig'
 import { LockFilled } from '@ant-design/icons'
+import useGlobalPropChanged from '../../hooks/useGlobalPropChanged'
 
 function isGroupOptionWithValidConfigs(option: BrickConfigGroupOption) {
   return option.configs && option.configs.length > 0 && !option.configs.every(config => config === null)
@@ -22,6 +23,7 @@ export interface ConfigTabComponentProps extends BaseFCProps {
 
 const SchemaConfig: FC<ConfigTabComponentProps> = ({ workData, currentSchema }) => {
   const [groupOptions, setGroupOptions] = useState<BrickConfigGroupOption[] | null>(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!currentSchema) {
@@ -33,7 +35,11 @@ const SchemaConfig: FC<ConfigTabComponentProps> = ({ workData, currentSchema }) 
 
   }, [currentSchema])
 
-  const onUnlockClick = () => {}
+  const onUnlockClick = () => {
+    dispatch(setSchemaEditProp({
+      isLocked: !!!currentSchema?.editProps?.isLocked
+    }))
+  }
   
   return (
     <>
@@ -89,14 +95,16 @@ const Config: FC = () => {
   const currentPage = getCurrentPage(data?.schemas)
   const dispatch = useDispatch()
 
+  useGlobalPropChanged(currentBrick)
+
   const [tabKey, setTabKey] = useState<'component' | 'layer' | 'page'>('component') 
 
   useEffect(() => {
     if (currentBrick && tabKey !== 'layer') {
       setTabKey('component')
-    }
-
-    if (currentPage && !currentBrick) {
+    } else if (!currentBrick && tabKey !== 'page') {
+      setTabKey(tabKey)
+    } else if (currentPage && !currentBrick) {
       setTabKey('page')
     }
   }, [currentBrick, currentPage, tabKey])

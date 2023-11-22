@@ -5,6 +5,7 @@ import Login from '@/pages/Login'
 import MyWorks from '@/pages/MyWorks'
 import Settings from '@/pages/Settings'
 import AnimationLearn from '@/test/AnimationLearn'
+import Any from '@/test/Any'
 import { createBrowserRouter } from 'react-router-dom'
 
 export const PATHNAME_LOGIN = '/login'
@@ -35,6 +36,9 @@ const router = createBrowserRouter([{
 }, {
   path: 'animation',
   element: <AnimationLearn/>
+}, {
+  path: 'test',
+  element: <Any/>
 }])
 
 export default router

@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { ConfigTabComponentProps } from '../..'
 import { DxBrickSchema, WorkProps } from '@/types/work'
-import { Button, Empty, List } from 'antd'
+import { Button, Empty, List, Tooltip } from 'antd'
 import styles from './index.module.scss'
 import { DragOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
@@ -12,16 +12,20 @@ const LayerItem: FC<{ workData: WorkProps, brickSchema: DxBrickSchema }> = ({ wo
   const dispatch = useDispatch()
 
   const onItemClick = (brickSchema: DxBrickSchema) => {
-    if (brickSchema && brickSchema.id) {
-      dispatch(setCurrentBrick({ id: brickSchema.id }))
-    }
+    dispatch(setCurrentBrick({ id: brickSchema.id as string }))
   }
 
-  const onHideClick = () => {
+  const onHideClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+
+    dispatch(setCurrentBrick({ id: brickSchema.id as string }))
     dispatch(setSchemaEditProp({ isHidden: !!!brickSchema.editProps?.isHidden }))
   }
 
-  const onLockClick = () => {
+  const onLockClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    
+    dispatch(setCurrentBrick({ id: brickSchema.id as string }))
     dispatch(setSchemaEditProp({ isLocked: !!!brickSchema.editProps?.isLocked }))
   }
 
@@ -34,16 +38,20 @@ const LayerItem: FC<{ workData: WorkProps, brickSchema: DxBrickSchema }> = ({ wo
   return (
     <div className={ itemWrapperClassnames } onClick={ () => onItemClick(brickSchema) }>
       <div>
-        <Button 
-          type='text' 
-          icon={ !!brickSchema.editProps?.isHidden ? <EyeOutlined /> : <EyeInvisibleOutlined /> } 
-          onClick={ onHideClick } 
-          />
-        <Button 
-          type='text' 
-          icon={ !!brickSchema.editProps?.isLocked ? <UnlockOutlined /> : <LockOutlined /> }
-          onClick={ onLockClick }
-          />
+        <Tooltip title={ !!brickSchema.editProps?.isHidden ? '可见' : '隐藏' }>
+          <Button 
+            type='text' 
+            icon={ !!brickSchema.editProps?.isHidden ? <EyeOutlined /> : <EyeInvisibleOutlined /> } 
+            onClick={ onHideClick } 
+            />
+        </Tooltip>
+        <Tooltip title={ !!brickSchema.editProps?.isLocked ? '解锁' : '锁定' }>
+          <Button 
+            type='text' 
+            icon={ !!brickSchema.editProps?.isLocked ? <UnlockOutlined /> : <LockOutlined /> }
+            onClick={ onLockClick }
+            />
+        </Tooltip>
         { brickSchema.title }
       </div>
       <Button type='text' icon={ <DragOutlined/> } />

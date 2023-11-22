@@ -33,15 +33,6 @@ const Item: FC<ConfigItemProps> = ({ workData, config, schema }) => {
     value = initValueTransfer(value)
   }
 
-  // const value = useMemo(() => {
-  //   let v = schema.props && schema.props[type] && schema.props[type][propName]
-  //   if (initValueTransfer) {
-  //     v = initValueTransfer(v)
-  //   }
-
-  //   return v
-  // }, [schema.props, initValueTransfer, propName, type])
-
   return (
     <div className={ styles.root } key={ propName }>
       <div className={ styles.labelWrapper } >{ label }</div>

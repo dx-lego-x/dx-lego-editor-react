@@ -30,7 +30,7 @@ export interface ConfigComponentOption {
   valueKey?: string
   initValueTransfer?: (v: any) => any
   resultValueTransfer?: (...args: any) => any
-  displayCondition?: (brickProps: DxBrickProps<any>) => boolean
+  displayCondition?: (brickProps: DxBrickProps<any>) => boolean // 某些属性存在联动情况，展示或不展示取决于某些其他属性
 }
 export interface BrickConfig {
   type: BrickConfigType
@@ -132,7 +132,6 @@ function makeRadioGroup(options: SelectOption[]): ConfigComponentOption {
 function makeSelect(options: SelectOption[]): ConfigComponentOption {
   return {
     component: Select,
-    // valueKey: 'defaultValue',
     props: {
       options
     },
