@@ -1,7 +1,7 @@
 import { GlobalState } from '@/store'
-import { WorkState, getCurrentBrick, getCurrentPage, setCurrentPage, setSchemaEditProp } from '@/store/reducers/work.reducer'
+import { WorkState, getCurrentBrick, getCurrentPage, selectCurrentPage, setSchemaEditProp } from '@/store/reducers/work.reducer'
 import { BrickConfig, BrickConfigGroupOption, transferSchemaConfiguration } from '@/utils/brick-tools/transfer-config'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './index.module.scss'
 import { Button, Collapse, Empty, List, Result, Tabs } from 'antd'
@@ -94,28 +94,47 @@ const Config: FC = () => {
   const currentBrick = getCurrentBrick(data?.schemas)
   const currentPage = getCurrentPage(data?.schemas)
   const dispatch = useDispatch()
+  const isUserActive = useRef(false)
 
   useGlobalPropChanged(currentBrick)
 
   const [tabKey, setTabKey] = useState<'component' | 'layer' | 'page'>('component') 
 
   useEffect(() => {
-    if (currentBrick && tabKey !== 'layer') {
-      setTabKey('component')
-    } else if (!currentBrick && tabKey !== 'page') {
-      setTabKey(tabKey)
-    } else if (currentPage && !currentBrick) {
-      setTabKey('page')
+    if (!data?.schemas) {
+      return
     }
-  }, [currentBrick, currentPage, tabKey])
+
+    // 主动点击优先级最高，不follow下面的策略
+    const curerntPageSelected = data.schemas.curerntPageSelected
+    if (isUserActive.current === true) {
+      if (tabKey === 'page' && !curerntPageSelected) {
+        dispatch(selectCurrentPage())
+      }
+      isUserActive.current = false
+      return
+    }
+
+    // 在page tab下选中了某个组件，自动切换到component tab
+    if (tabKey !== 'layer') {
+      if (currentBrick && !curerntPageSelected) {
+        setTabKey('component')
+      }
+    }
+
+    // 在非page tab下选中了page，自动切换到page tab
+    if (tabKey !== 'page') {
+      if (!currentBrick && curerntPageSelected) {
+        setTabKey('page')
+      }
+    }
+
+  }, [currentBrick, data?.schemas, dispatch, tabKey])
 
   const onTabClick = (activeKey: string) => {
+    isUserActive.current = true
     const _tabKey = activeKey as 'component' | 'layer' | 'page'
     setTabKey(_tabKey)
-
-    if (_tabKey === 'page') {
-      dispatch(setCurrentPage({ id: currentPage?.id || '' }))
-    }
   }
 
   return (

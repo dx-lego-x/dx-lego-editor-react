@@ -5,27 +5,27 @@ import { Button, Empty, List, Tooltip } from 'antd'
 import styles from './index.module.scss'
 import { DragOutlined, EyeInvisibleOutlined, EyeOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
-import { setCurrentBrick, setSchemaEditProp } from '@/store/reducers/work.reducer'
+import { selectCurrentBrick, setSchemaEditProp } from '@/store/reducers/work.reducer'
 import classNames from 'classnames'
 
 const LayerItem: FC<{ workData: WorkProps, brickSchema: DxBrickSchema }> = ({ workData, brickSchema}) => {
   const dispatch = useDispatch()
 
   const onItemClick = (brickSchema: DxBrickSchema) => {
-    dispatch(setCurrentBrick({ id: brickSchema.id as string }))
+    dispatch(selectCurrentBrick({ id: brickSchema.id as string }))
   }
 
   const onHideClick = (e: React.MouseEvent) => {
     e.stopPropagation()
 
-    dispatch(setCurrentBrick({ id: brickSchema.id as string }))
+    dispatch(selectCurrentBrick({ id: brickSchema.id as string }))
     dispatch(setSchemaEditProp({ isHidden: !!!brickSchema.editProps?.isHidden }))
   }
 
   const onLockClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     
-    dispatch(setCurrentBrick({ id: brickSchema.id as string }))
+    dispatch(selectCurrentBrick({ id: brickSchema.id as string }))
     dispatch(setSchemaEditProp({ isLocked: !!!brickSchema.editProps?.isLocked }))
   }
 
@@ -34,9 +34,11 @@ const LayerItem: FC<{ workData: WorkProps, brickSchema: DxBrickSchema }> = ({ wo
     [styles.active]: workData.schemas?.currentBrickId === brickSchema.id
   })
 
-
   return (
-    <div className={ itemWrapperClassnames } onClick={ () => onItemClick(brickSchema) }>
+    <div 
+      className={ itemWrapperClassnames } 
+      onClick={ () => onItemClick(brickSchema) } 
+      >
       <div>
         <Tooltip title={ !!brickSchema.editProps?.isHidden ? '可见' : '隐藏' }>
           <Button 
@@ -54,7 +56,7 @@ const LayerItem: FC<{ workData: WorkProps, brickSchema: DxBrickSchema }> = ({ wo
         </Tooltip>
         { brickSchema.title }
       </div>
-      <Button type='text' icon={ <DragOutlined/> } />
+      <div><DragOutlined/></div>
     </div>
   )
 }

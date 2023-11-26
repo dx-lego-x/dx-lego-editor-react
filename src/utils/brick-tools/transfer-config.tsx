@@ -3,14 +3,14 @@ import SizeInput from '@/pages/Editor/components/Config/components/SizeInput'
 import { BaseFCProps } from '@/types/base'
 import { DxBrickSchema, DxPageSchema, WorkProps } from '@/types/work'
 import { ColorPicker, Input, InputNumber, Radio, Select, Slider } from 'antd'
-import { DxBrickProps, DxBrickStyleProps, PageProps, TextProps } from 'dx-lego-bricks'
+import { DxBrickProps, DxBrickStyleProps, PageProps, TextProps, ImageProps } from 'dx-lego-bricks'
 import { cloneDeep } from 'lodash'
 import { FC } from 'react'
 
 // =============== types ================== //
 export type BrickConfigGroupOption = { type: ConfigGroupType, name: string, configs: (BrickConfig | null)[]}
 export type ConfigGroupType = 'basic' | 'size' | 'border' | 'shadow' | 'position' | 'event' | 'layout'
-export type PropNameKeys = keyof DxBrickStyleProps | keyof DxBrickProps<TextProps & PageProps>['custom']
+export type PropNameKeys = keyof DxBrickStyleProps | keyof DxBrickProps<TextProps & PageProps & ImageProps>['custom']
 export type ConfigComponent = React.ForwardRefExoticComponent<any> | FC<BrickConfigFCProps<any> | any>
 export interface BrickConfigFCProps<T> extends BaseFCProps {
   workdata: WorkProps
@@ -73,7 +73,6 @@ const defaultConfigGroups: ConfigGroupInfo[] = [{
 
 export const defaultResultValueTransfer = (e: any) => e.target.value
 
-
 // =============== functions ================== //
 function genBrickGroupOptions(component?: string) {
   let config: null | ConfigGroupInfo[] = null
@@ -95,6 +94,12 @@ function genBrickGroupOptions(component?: string) {
     const _defaultConfigGroups = cloneDeep(defaultConfigGroups)
     config = _defaultConfigGroups
     config.find(item => item.type === 'basic')?.propNames.unshift('text')
+
+  } else if (component === 'Image') {
+    const _defaultConfigGroups = cloneDeep(defaultConfigGroups)
+    const basicConfig = _defaultConfigGroups.find(item => item.type === 'basic') as ConfigGroupInfo
+    basicConfig.propNames = ['src']
+    config = _defaultConfigGroups
   }
 
   return config
@@ -143,6 +148,9 @@ const mapPropName2ConfigComponentOption: Partial<Record<PropNameKeys, ConfigComp
   // 基础
   text: {
     component: Input.TextArea,
+  },
+  src: {
+    component: Input.TextArea
   },
   fontSize: makeNumberInput(),
   color: makeColorInput(),
@@ -278,7 +286,8 @@ const mapPropName2ConfigComponentOption: Partial<Record<PropNameKeys, ConfigComp
 }
 
 const mapPropName2Label: Partial<Record<PropNameKeys, string>> = {
-  text: '文本内容',
+  'text': '文本内容',
+  'src': '链接',
   'height': '高度',
   'width': '宽度',
   'minHeight': '最小高度',

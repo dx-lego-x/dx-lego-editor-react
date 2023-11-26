@@ -4,10 +4,10 @@ import { fetchSelectorBricksApi } from '@/api/work.api'
 import styles from './index.module.scss'
 import { DxBrickSchema, SelectorBrickGroupInfo } from '@/types/work'
 import { Collapse, List } from 'antd'
-import { transferBrickComponent } from '@/utils/brick-tools/transfer-component'
 import { useDispatch } from 'react-redux'
 import { addBrick } from '@/store/reducers/work.reducer'
 import { cloneDeep } from 'lodash'
+import { transferBrickComponent } from 'dx-lego-bricks'
 
 const Selector: FC = () => {
 

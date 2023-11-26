@@ -3,10 +3,10 @@ import styles from './index.module.scss'
 import { useSelector } from 'react-redux'
 import { GlobalState } from '@/store'
 import { WorkState, getCurrentPage } from '@/store/reducers/work.reducer'
-import { transferBrickComponent } from '@/utils/brick-tools/transfer-component'
 import EditWrapper from '../EditWrapper'
 import { DxBrickSchema } from '@/types/work'
 import PageEditWrapper from '../PageEditWrapper'
+import { transferBrickComponent } from 'dx-lego-bricks'
 
 const Canvas: FC = () => {
   const { data: workInfo } = useSelector<GlobalState, WorkState>(store => store.work)

@@ -14,9 +14,9 @@
     height: 100% !important;
   }
 
-  &:hover {
-    border: $line-width dashed $color-main-spliter;
-  }
+  // &:hover {
+  //   border: $line-width dashed $color-main-spliter;
+  // }
 
   &.active {
     border: $line-width solid $color-main-blue;

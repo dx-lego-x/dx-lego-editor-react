@@ -26,3 +26,10 @@
     display: none;
   }
 }
+
+.menuLabel {
+  color: $color-main-gray;
+  &.danger {
+    color: $color-main-red;
+  }
+}

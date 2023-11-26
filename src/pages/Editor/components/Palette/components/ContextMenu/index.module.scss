@@ -1,0 +1,9 @@
+@import "@/assets/styles/dimens.scss";
+@import "@/assets/styles/colors.scss";
+
+.menuLabel {
+  color: $color-main-gray;
+  &.danger {
+    color: $color-main-red;
+  }
+}

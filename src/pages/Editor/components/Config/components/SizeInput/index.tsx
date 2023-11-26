@@ -10,6 +10,7 @@ export interface SizeInputProps extends BrickConfigFCProps<string> {
 const baseOptions = [
   { label: '自动', value: 'auto' },
   { label: '自适应', value: 'fit-content' },
+  { label: '100%', value: '100%' }
 ]
 
 const SizeInput: FC<SizeInputProps> = ({ schemadata, value, onChange }) => {
