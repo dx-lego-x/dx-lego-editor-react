@@ -53,17 +53,19 @@ const MyWorks: FC = () => {
 
     return (
       <div className={ styles.listRoot }>
-        <List
-          grid={{ gutter: 16, column: 4 }}
-          dataSource={ workListData.list }
-          renderItem={(work) => {
-            return (
-              <List.Item>
-                <WorkCard work={ work }/>
-              </List.Item>
-            )
-          }}
-          />
+        <div className={ styles.listWrapper }>
+          <List
+            grid={{ gutter: 16, column: 4 }}
+            dataSource={ workListData.list }
+            renderItem={(work) => {
+              return (
+                <List.Item>
+                  <WorkCard work={ work }/>
+                </List.Item>
+              )
+            }}
+            />
+        </div>
       </div>
     )
   }

@@ -2,7 +2,7 @@ import { fetchWorkByUuidApi } from '@/api/work.api'
 import { GlobalState } from '@/store'
 import { WorkState, setWorkData } from '@/store/reducers/work.reducer'
 import { useRequest } from 'ahooks'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import useUserInfo from './useUserInfo'
@@ -14,6 +14,7 @@ export default function useWorkInfo() {
   const { data: workInfo } = useSelector<GlobalState, WorkState>(store => store.work)
   const dispatch = useDispatch()
   const { uuid } = useParams()
+  const lastuuid = useRef<string | undefined>(undefined)
 
   const { run: fetchWorkByUuid, loading } = useRequest(fetchWorkByUuidApi, {
     manual: true,
@@ -33,12 +34,13 @@ export default function useWorkInfo() {
       return
     }
 
-    if (workInfo) {
+    if (!uuid) {
       return
     }
 
-    if (uuid) {
+    if (lastuuid.current !== uuid) {
       fetchWorkByUuid({ uuid })
+      lastuuid.current = uuid
     }
   }, [userInfo, fetchWorkByUuid, uuid, workInfo])
 

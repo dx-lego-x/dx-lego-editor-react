@@ -2,51 +2,14 @@
 
 .listRoot {
   width: 100%;
+  height: 100%;
   padding: $padding-extreme-large-xxx;
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
 
-  // .coverImageWrapper {
-  //   width: 100%;
-  //   height: 200px;
-  //   position: relative;
-  //   // background-image: url("https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png");
-  //   background-size: cover;
-  //   border-top-left-radius: $radius-normal-xx;
-  //   border-top-right-radius: $radius-normal-xx;
-  //   overflow: hidden;
-
-  //   .maskWrapper {
-  //     position: absolute;
-  //     top: 0;
-  //     left: 0;
-  //     width: 100%;
-  //     height: 100%;
-  //     background-color: rgba(0, 0, 0, 0.3);
-  //     z-index: 1;
-  //     border-top-left-radius: $radius-normal-xx;
-  //     border-top-right-radius: $radius-normal-xx;
-  //   }
-
-    // &::before {
-    //   content: "";
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100%;
-    //   height: 100%;
-    //   background-color: rgba(0, 0, 0, 0);
-    //   z-index: 1;
-    //   border-top-left-radius: $radius-normal-xx;
-    //   border-top-right-radius: $radius-normal-xx;
-    // }
-
-    // &:hover::before {
-    //   background-color: rgba(0, 0, 0, 0.3);
-    // }
-
-  //   .image {
-  //     width: 100%;
-  //     height: 100%;
-  //   }
-  // }
+  .listWrapper {
+    max-width: 1080px;
+  }
   
 }
