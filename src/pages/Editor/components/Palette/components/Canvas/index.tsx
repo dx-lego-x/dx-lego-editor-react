@@ -54,11 +54,16 @@ const Canvas: FC = () => {
 
                   return (
                     <EditWrapper key={ id } brick={ brickSchema } >
-                      <Component style={ brickProps?.style || {} } custom={ brickProps?.custom } />
+                      <Component 
+                        style={ brickProps?.style || {} } 
+                        custom={ brickProps?.custom } 
+                        events={ {} } // Canvas上事件不生效
+                        />
                     </EditWrapper>
                   )
                 })
               }} 
+              events={ {} }
               />
           </PageEditWrapper>
         }

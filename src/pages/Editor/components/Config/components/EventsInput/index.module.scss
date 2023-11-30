@@ -1,0 +1,25 @@
+@import "@/assets/styles/dimens.scss";
+
+.addItemButton {
+  width: 100%;
+  margin-top: $padding-large;
+  margin-bottom: $padding-large;
+}
+
+.itemWrapper {
+  width: 100%;
+  .titleWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      font-weight: bold;
+    }
+    .button {
+      padding: 0;
+    }
+  }
+  .infoWrapper {
+    width: 100%;
+  }
+}

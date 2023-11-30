@@ -11,6 +11,7 @@ import { DxBrickSchema, DxPageSchema, WorkProps } from '@/types/work'
 import LayerConfig from './components/LayerConfig'
 import { LockFilled } from '@ant-design/icons'
 import useGlobalPropChanged from '../../hooks/useGlobalPropChanged'
+import EventsInput from './components/EventsInput'
 
 function isGroupOptionWithValidConfigs(option: BrickConfigGroupOption) {
   return option.configs && option.configs.length > 0 && !option.configs.every(config => config === null)
@@ -64,6 +65,21 @@ const SchemaConfig: FC<ConfigTabComponentProps> = ({ workData, currentSchema }) 
         <Collapse
           items={
             groupOptions.filter(option => isGroupOptionWithValidConfigs(option)).map(groupOption => {
+              const { type } = groupOption
+
+              if (type === 'events') {
+                return {
+                  key: groupOption.type,
+                  label: <div className={ styles.collapseLabelWrapper }>{ groupOption.name }</div>,
+                  children: (
+                    <EventsInput
+                      workData={ workData }
+                      schema={ currentSchema }
+                      />
+                  )
+                }
+              }
+
               return {
                 key: groupOption.type,
                 label: <div className={ styles.collapseLabelWrapper }>{ groupOption.name }</div>,

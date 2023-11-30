@@ -51,7 +51,11 @@ const Selector: FC = () => {
                         <List.Item key={ brickInfo.id } onClick={ () => onBrickSelected(brickInfo.schema) }>
                           {
                             Brick &&
-                            <Brick style={ schema.props?.style || {} } custom={ schema.props?.custom }/>
+                            <Brick 
+                              style={ schema.props?.style || {} } 
+                              custom={ schema.props?.custom }
+                              events={{}} // selector默认事件不生效
+                              />
                           }
                         </List.Item>
                       )

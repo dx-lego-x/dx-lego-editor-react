@@ -1,4 +1,4 @@
-import { DxBrickEditProps, DxBrickSchema, DxLegoSchema, WorkProps } from '@/types/work'
+import { EditEventProps, DxBrickEditProps, DxBrickSchema, DxLegoSchema, WorkProps } from '@/types/work'
 import { BrickConfigType, PropNameKeys } from '@/utils/brick-tools/transfer-config'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
@@ -84,6 +84,41 @@ const slice = createSlice({
         ...currentBrick.editProps,
         ...action.payload
       }
+    },
+
+    setEvent(state, action: PayloadAction<EditEventProps>) {
+      const birck = getCurrentBrick(state.data?.schemas)
+      if (!birck || !birck.props) {
+        return
+      }
+
+      const { eventName, type, handler } = action.payload
+
+      const events = birck.props?.events || {}
+      
+      birck.props.events = {
+        ...events,
+        [eventName]: {
+          type,
+          handler
+        }
+      }
+
+    },
+
+    removeEvent(state, action: PayloadAction<{ eventName: string }>) {
+      const brick = getCurrentBrick(state.data?.schemas)
+      if (!brick) {
+        return
+      }
+
+
+      if (!brick.props || !brick.props.events) {
+        return
+      }
+
+      const { eventName } = action.payload
+      delete brick.props.events[eventName]
     },
     
     removeBrick(state, action: PayloadAction<{ id: string }>) {
@@ -243,6 +278,8 @@ export const {
   addBrick,
   setSchemaProp,
   setSchemaEditProp,
+  setEvent,
+  removeEvent,
   removeBrick,
   moveBrick,
   switchBrick,

@@ -9,8 +9,10 @@ import { FC } from 'react'
 
 // =============== types ================== //
 export type BrickConfigGroupOption = { type: ConfigGroupType, name: string, configs: (BrickConfig | null)[]}
-export type ConfigGroupType = 'basic' | 'size' | 'border' | 'shadow' | 'position' | 'event' | 'layout'
-export type PropNameKeys = keyof DxBrickStyleProps | keyof DxBrickProps<TextProps & PageProps & ImageProps>['custom']
+export type ConfigGroupType = 'basic' | 'size' | 'border' | 'shadow' | 'position' | 'events' | 'layout'
+export type PropNameKeys = 
+  keyof DxBrickStyleProps | 
+  keyof DxBrickProps<TextProps & PageProps & ImageProps>['custom']
 export type ConfigComponent = React.ForwardRefExoticComponent<any> | FC<BrickConfigFCProps<any> | any>
 export interface BrickConfigFCProps<T> extends BaseFCProps {
   workdata: WorkProps
@@ -23,7 +25,7 @@ export interface ConfigGroupInfo {
   name: string
   propNames: PropNameKeys[]
 }
-export type BrickConfigType = 'style' | 'custom'
+export type BrickConfigType = 'style' | 'custom' | 'events'
 export interface ConfigComponentOption {
   component: ConfigComponent
   props?: any
@@ -66,7 +68,7 @@ const defaultConfigGroups: ConfigGroupInfo[] = [{
   name: '定位',
   propNames: ['position', 'left', 'top'],
 }, {
-  type: 'event',
+  type: 'events',
   name: '事件',
   propNames: [],
 }]
@@ -342,27 +344,39 @@ export function transferSchemaConfiguration(schema: DxBrickSchema | DxPageSchema
   }
 
   const groupOptionsWithConfigs = groupOptions.map(groupOption => {
+    let configs: (BrickConfig | null)[]
+    // 事件提供一个统一的配置组件，而不是单项逐一配置
+    if (groupOption.type === 'events') {
+      configs = [{
+        type: 'events',
+        propName: 'width',
+        label: '事件',
+        componentOption: {
+          component: Input
+        }
+      }]
+    } else {
+      configs = groupOption.propNames.map(propName => {
+        const componentOption = mapPropName2ConfigComponentOption[propName]
+        // 当前属性没有配置或配置里不存在组件，返回null则不展示
+        if (!componentOption || !componentOption.component) {
+          return null
+        }
 
-    const configs: (BrickConfig | null)[] = groupOption.propNames.map(propName => {
-      const componentOption = mapPropName2ConfigComponentOption[propName]
-      // 当前属性没有配置或配置里不存在组件，返回null则不展示
-      if (!componentOption || !componentOption.component) {
-        return null
-      }
+        // 某些属性的配置展示依赖的前置条件，当条件不成立时也不展示，例如borderWidth只在borderStyle不为none时才展示
+        const displayCondition = componentOption.displayCondition
+        if (displayCondition && schema.props && !displayCondition(schema.props)) {
+          return null
+        }
 
-      // 某些属性的配置展示依赖的前置条件，当条件不成立时也不展示，例如borderWidth只在borderStyle不为none时才展示
-      const displayCondition = componentOption.displayCondition
-      if (displayCondition && schema.props && !displayCondition(schema.props)) {
-        return null
-      }
-
-      return {
-        type: getBrickConfigType(schema, propName),
-        propName,
-        label: mapPropName2Label[propName] || '未配置的属性 = =',
-        componentOption
-      }
-    })
+        return {
+          type: getBrickConfigType(schema, propName),
+          propName,
+          label: mapPropName2Label[propName] || '未配置的属性 = =',
+          componentOption
+        }
+      })
+    }
 
     return {
       type: groupOption.type,

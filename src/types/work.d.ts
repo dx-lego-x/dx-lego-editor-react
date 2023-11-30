@@ -40,7 +40,7 @@
 //   channels?: ChannelProps[]
 // }
 
-import { DxBrickProps, ImageProps, PageProps, TextProps } from 'dx-lego-bricks'
+import { DxBrickProps, DxEventProps } from 'dx-lego-bricks'
 
 // export * from 'dx-lego-bricks'
 
@@ -55,7 +55,7 @@ export interface DxBrickSchema<T = any> {
   desc?: string // 组件描述
   component?: string // 组件对应的组件名（大写）
   sampleImg?: string // 组件在Selector展示时的示例图片
-  props?: DxBrickProps<any> // 组件属性，包括style和custom
+  props?: DxBrickProps<T> // 组件属性，包括style和custom
   editProps?: DxBrickEditProps
 }
 
@@ -119,4 +119,8 @@ export interface SelectorBrickGroupInfo {
   groupType: string
   groupName: string
   groupBricks: SelectorBrickProps[]
+}
+
+export interface EditEventProps extends DxEventProps {
+  eventName: string
 }
